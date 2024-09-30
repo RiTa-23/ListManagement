@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('members.create')" :active="request()->routeIs('members.create')">
                     {{ __('メンバー追加') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('members.search')" :active="request()->routeIs('members.search')">
+                    {{ __('メンバー検索') }}
+                    </x-responsive-nav-link>
                 </div>
             </div>
 
@@ -82,6 +85,9 @@
       <x-responsive-nav-link :href="route('members.create')" :active="request()->routeIs('members.create')">
         {{ __('メンバー追加') }}
       </x-responsive-nav-link>
+      <x-responsive-nav-link :href="route('members.search')" :active="request()->routeIs('members.search')">
+            {{ __('メンバー検索') }}
+          </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

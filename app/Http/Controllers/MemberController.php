@@ -34,7 +34,7 @@ class MemberController extends Controller
             $validated=$request->validate([
       'studentID' => 'required|max:7|unique:members,studentID',
       'name' => 'required|max:20',
-      'nickname' => 'required|max:20',
+      'nickname' => 'nullable|max:20',
       'faculty' => 'required|max:10',
       'department' => 'required|max:10',
       'grade' => 'required|max:5',
@@ -72,7 +72,7 @@ class MemberController extends Controller
             $validated=$request->validate([
       'studentID' => 'required|max:7|',
       'name' => 'required|max:20',
-      'nickname' => 'required|max:20',
+      'nickname' => 'nullable|max:20',
       'faculty' => 'required|max:10',
       'department' => 'required|max:10',
       'grade' => 'required|max:5',
@@ -87,10 +87,40 @@ class MemberController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Member $member)
-    {
-        //
-        $member->delete();
-        return redirect()->route('members.index');
+    public function search(Request $request)
+{
+    $query = Member::query();
+
+    // 各項目に対して検索条件が指定されているかチェックし、絞り込み
+    if ($request->filled('studentID')) {
+        $query->where('studentID', 'like', '%' . $request->studentID . '%');
     }
+
+    if ($request->filled('name')) {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+
+    if ($request->filled('nickname')) {
+        $query->where('nickname', 'like', '%' . $request->nickname . '%');
+    }
+
+    if ($request->filled('faculty')) {
+        $query->where('faculty', 'like', '%' . $request->faculty . '%');
+    }
+
+    if ($request->filled('department')) {
+        $query->where('department', 'like', '%' . $request->department . '%');
+    }
+
+    if ($request->filled('grade')) {
+        $query->where('grade', 'like', '%' . $request->grade . '%');
+    }
+
+    // ページネーションを追加（1ページに10件表示）
+    $members = $query->latest()->paginate(10);
+
+    return view('members.search', compact('members'));
+}
+
+
 }
