@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('members.search')" :active="request()->routeIs('members.search')">
                     {{ __('メンバー検索') }}
                     </x-responsive-nav-link>
+                    <x-nav-link :href="route('members.stats')" :active="request()->routeIs('members.stats')">
+                    {{ __('集計') }}
+                    </x-responsive-nav-link>
                 </div>
             </div>
 
@@ -87,6 +90,9 @@
       </x-responsive-nav-link>
       <x-responsive-nav-link :href="route('members.search')" :active="request()->routeIs('members.search')">
             {{ __('メンバー検索') }}
+          </x-responsive-nav-link>
+          <x-responsive-nav-link :href="route('members.stats')" :active="request()->routeIs('members.stats')">
+            {{ __('集計') }}
           </x-responsive-nav-link>
         </div>
 

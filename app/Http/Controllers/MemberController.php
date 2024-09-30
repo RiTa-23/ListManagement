@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class MemberController extends Controller
 {
@@ -15,6 +17,13 @@ class MemberController extends Controller
         //
         $members = Member::with('user')->latest()->get();
         return view('members.index', compact('members'));
+    }
+
+    public function destroy(Member $member)
+    {
+        $member->delete();
+        // リダイレクトとフラッシュメッセージ
+    return redirect()->route('members.index')->with('success', 'メンバーが削除されました');
     }
 
     /**
@@ -121,6 +130,30 @@ class MemberController extends Controller
 
     return view('members.search', compact('members'));
 }
+
+public function stats()
+{
+    // 全体の人数を取得
+    $totalMembers = Member::count();
+
+    // 学年ごとの人数を取得
+    $membersByGrade = Member::select('grade', DB::raw('count(*) as total'))
+                            ->groupBy('grade')
+                            ->get();
+
+    // 学部ごとの人数を取得
+    $membersByFaculty = Member::select('faculty', DB::raw('count(*) as total'))
+                              ->groupBy('faculty')
+                              ->get();
+
+    // 学科ごとの人数を取得
+    $membersByDepartment = Member::select('department', DB::raw('count(*) as total'))
+                                 ->groupBy('department')
+                                 ->get();
+
+    return view('members.stats', compact('totalMembers', 'membersByGrade', 'membersByFaculty', 'membersByDepartment'));
+}
+
 
 
 }
